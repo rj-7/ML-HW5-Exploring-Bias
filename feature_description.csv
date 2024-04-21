@@ -1,0 +1,88 @@
+F0semitoneFrom27.5Hz_sma3nz_amean,"mean logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_stddevNorm,"standard deviation of logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_percentile20.0,"20th percentile of logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_percentile50.0,"50th percentile of logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_percentile80.0,"80th percentile of logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_pctlrange0-2,"range of 20th to 80th percentile of logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_meanRisingSlope,"mean of the slope of rising logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_stddevRisingSlope,"standard deviation of the slope of rising logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_meanFallingSlope,"mean of the slope of falling logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+F0semitoneFrom27.5Hz_sma3nz_stddevFallingSlope,"standard deviation of the slope of falling logarithmic F0 on a semitone frequency scale, starting at 27.5 Hz (semitone 0) "
+loudness_sma3_amean,mean loudness
+loudness_sma3_stddevNorm,standard deviation of loudness
+loudness_sma3_percentile20.0,20th percentile of loudness
+loudness_sma3_percentile50.0,50th percentile of loudness
+loudness_sma3_percentile80.0,80th percentile of loudness
+loudness_sma3_pctlrange0-2,range of 20th to 80th percentile of loudness
+loudness_sma3_meanRisingSlope,mean of the slope of rising loudness
+loudness_sma3_stddevRisingSlope,standard deviation of the slope of rising loudness
+loudness_sma3_meanFallingSlope,mean of the slope of falling loudness
+loudness_sma3_stddevFallingSlope,standard deviation of the slope of falling loudness
+spectralFlux_sma3_amean,mean spectral flux
+spectralFlux_sma3_stddevNorm,standard deviation of spectral flux
+mfcc1_sma3_amean,mean of the first Mel-Frequency-Cepstral-Coefficient (MFCC-1) 
+mfcc1_sma3_stddevNorm,standard deviation of the first (Mel-Frequency-Cepstral-Coefficient (MFCC-1) 
+mfcc2_sma3_amean,mean of the second Mel-Frequency-Cepstral-Coefficient (MFCC-2) 
+mfcc2_sma3_stddevNorm,standard deviation of the second Mel-Frequency-Cepstral-Coefficient (MFCC-2)
+mfcc3_sma3_amean,mean of the third Mel-Frequency-Cepstral-Coefficient (MFCC-3)
+mfcc3_sma3_stddevNorm,standard deviation of the third Mel-Frequency-Cepstral-Coefficient (MFCC-3) 
+mfcc4_sma3_amean,mean of the fourth Mel-Frequency-Cepstral-Coefficient (MFCC-4)
+mfcc4_sma3_stddevNorm,standard deviation of the fourth Mel-Frequency-Cepstral-Coefficient (MFCC-4)
+jitterLocal_sma3nz_amean,mean jitter
+jitterLocal_sma3nz_stddevNorm,standard deviation of jitter
+shimmerLocaldB_sma3nz_amean,mean shimmer
+shimmerLocaldB_sma3nz_stddevNorm,standard deviation of shimmer
+HNRdBACF_sma3nz_amean,mean Harmonics-to-Noise Ratio (HNR)
+HNRdBACF_sma3nz_stddevNorm,standard deviation of Harmonics-to-Noise Ratio (HNR)
+logRelF0-H1-H2_sma3nz_amean,mean of Harmonic difference H1ÐH2 (ratio of energy of the first F0 harmonic (H1) to the energy of the second F0 harmonic (H2))
+logRelF0-H1-H2_sma3nz_stddevNorm,standard deviation of Harmonic difference H1ÐH2 (ratio of energy of the first F0 harmonic (H1) to the energy of the second F0 harmonic (H2))
+logRelF0-H1-A3_sma3nz_amean,mean Harmonic difference H1ÐA3 (ratio of energy of the first F0 harmonic (H1) to the energy of the highest harmonic in the third formant range (A3))
+logRelF0-H1-A3_sma3nz_stddevNorm,standard deviation of Harmonic difference H1ÐA3 (ratio of energy of the first F0 harmonic (H1) to the energy of the highest harmonic in the third formant range (A3))
+F1frequency_sma3nz_amean,mean frequency of the first formant (F1)
+F1frequency_sma3nz_stddevNorm,standard deviation of frequency of the first formant (F1)
+F1bandwidth_sma3nz_amean,mean bandwidth of the first formant (F1)
+F1bandwidth_sma3nz_stddevNorm,standard deviation of bandwidth of the first formant (F1)
+F1amplitudeLogRelF0_sma3nz_amean,mean ratio of the energy of the spectral harmonic peak at the first formantÕs centre frequency to the energy of the spectral peak at F0
+F1amplitudeLogRelF0_sma3nz_stddevNorm,standard deviaion of ratio of the energy of the spectral harmonic peak at the first formantÕs centre frequency to the energy of the spectral peak at F0
+F2frequency_sma3nz_amean,mean ratio of the energy of the spectral harmonic peak at the second formantÕs centre frequency to the energy of the spectral peak at F0
+F2frequency_sma3nz_stddevNorm,standard deviaion of ratio of the energy of the spectral harmonic peak at the second formantÕs centre frequency to the energy of the spectral peak at F0
+F2bandwidth_sma3nz_amean,mean bandwidth of the second formant (F2)
+F2bandwidth_sma3nz_stddevNorm,standard deviation of bandwidth of the second formant (F2)
+F2amplitudeLogRelF0_sma3nz_amean,mean ratio of the energy of the spectral harmonic peak at the second formantÕs centre frequency to the energy of the spectral peak at F0
+F2amplitudeLogRelF0_sma3nz_stddevNorm,standard deviaion of ratio of the energy of the spectral harmonic peak at the second formantÕs centre frequency to the energy of the spectral peak at F0
+F3frequency_sma3nz_amean,mean frequency of the third formant (F3)
+F3frequency_sma3nz_stddevNorm,standard deviation of frequency of the third formant (F3)
+F3bandwidth_sma3nz_amean,mean bandwidth of the third formant (F3)
+F3bandwidth_sma3nz_stddevNorm,standard deviation of bandwidth of the third formant (F3)
+F3amplitudeLogRelF0_sma3nz_amean,mean ratio of the energy of the spectral harmonic peak at the third formantÕs centre frequency to the energy of the spectral peak at F0
+F3amplitudeLogRelF0_sma3nz_stddevNorm,standard deviaion of ratio of the energy of the spectral harmonic peak at the third formantÕs centre frequency to the energy of the spectral peak at F0
+alphaRatioV_sma3nz_amean,mean Alpha Ratio (ratio of the summed energy from 50Ð1000 Hz and 1Ð5 kHz) computed over voiced regions only
+alphaRatioV_sma3nz_stddevNorm,standard deviation of Alpha Ratio (ratio of the summed energy from 50Ð1000 Hz and 1Ð5 kHz)
+hammarbergIndexV_sma3nz_amean,mean Hammarberg Index (ratio of the strongest energy peak in the 0Ð2 kHz region to the strongest peak in the 2Ð5 kHz region) computed over voiced regions only
+hammarbergIndexV_sma3nz_stddevNorm,standard deviation of Hammarberg Index (ratio of the strongest energy peak in the 0Ð2 kHz region to the strongest peak in the 2Ð5 kHz region) computed over voiced regions only
+slopeV0-500_sma3nz_amean,mean spectral slope from 0Ð500 Hz over all voiced segments
+slopeV0-500_sma3nz_stddevNorm,standard deviation of spectral slope from 0Ð500 Hz over all voiced segments
+slopeV500-1500_sma3nz_amean,mean spectral slope from 500Ð1500 Hz over all voiced segments
+slopeV500-1500_sma3nz_stddevNorm,standard deviation of spectral slope from 500Ð1500 Hz over all voiced segments
+spectralFluxV_sma3nz_amean,mean spectral flux (difference of the spectra of two consecutive frames) computed over voiced segments
+spectralFluxV_sma3nz_stddevNorm,standard deviation of spectral flux (difference of the spectra of two consecutive frames) computed over voiced segments
+mfcc1V_sma3nz_amean,mean of the first Mel-Frequency-Cepstral-Coefficient (MFCC-1) computed over voiced regions only
+mfcc1V_sma3nz_stddevNorm,standard deviation of the first (Mel-Frequency-Cepstral-Coefficient (MFCC-1) computed over voiced regions only
+mfcc2V_sma3nz_amean,mean of the second Mel-Frequency-Cepstral-Coefficient (MFCC-2) computed over voiced regions only
+mfcc2V_sma3nz_stddevNorm,standard deviation of the second Mel-Frequency-Cepstral-Coefficient (MFCC-2) computed over voiced regions only
+mfcc3V_sma3nz_amean,mean of the third Mel-Frequency-Cepstral-Coefficient (MFCC-3) computed over voiced regions only
+mfcc3V_sma3nz_stddevNorm,standard deviation of the third Mel-Frequency-Cepstral-Coefficient (MFCC-3) computed over voiced regions only
+mfcc4V_sma3nz_amean,mean of the fourth Mel-Frequency-Cepstral-Coefficient (MFCC-4) computed over voiced regions only
+mfcc4V_sma3nz_stddevNorm,standard deviation of the fourth Mel-Frequency-Cepstral-Coefficient (MFCC-4) computed over voiced regions only
+alphaRatioUV_sma3nz_amean,mean Alpha Ratio (ratio of the summed energy from 50Ð1000 Hz and 1Ð5 kHz) computed over unvoiced regions only
+hammarbergIndexUV_sma3nz_amean,mean Hammarberg Index (ratio of the strongest energy peak in the 0Ð2 kHz region to the strongest peak in the 2Ð5 kHz region) computed over unvoiced regions only
+slopeUV0-500_sma3nz_amean,mean spectral slope from 0Ð500 Hz over all unvoiced segments
+slopeUV500-1500_sma3nz_amean,mean spectral slope from 500-1500 Hz over all unvoiced segments
+spectralFluxUV_sma3nz_amean,mean spectral flux (difference of the spectra of two consecutive frames) computed over unvoiced segments
+loudnessPeaksPerSec,rate of loudness peaks
+VoicedSegmentsPerSec,number of continuous voiced regions per sec (pseudo syllable rate)
+MeanVoicedSegmentLengthSec,mean length of continuously voiced regions (F0 > 0) 
+StddevVoicedSegmentLengthSec,standard deviation of continuously voiced regions (F0 > 0) 
+MeanUnvoicedSegmentLength,"mean length of continuously unvoiced regions (F0 ~ 0, approximating pauses) "
+StddevUnvoicedSegmentLength,"standard deviation of continuously unvoiced regions (F0 ~ 0, approximating pauses) "
+equivalentSoundLevel_dBp,"equivalent sound level (LEq), converted from the average of the per-frame RMS energies to a logarithmic (dB) scale"
