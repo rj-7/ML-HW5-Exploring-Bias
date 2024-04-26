@@ -3,21 +3,21 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "e5c5a5d4",
+   "id": "d03a966d",
    "metadata": {
     "_cell_guid": "b1076dfc-b9ad-4769-8c92-a6c4dae69d19",
     "_uuid": "8f2839f25d086af736a60e9eeb907d3b93b6e0e5",
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:28.344270Z",
-     "iopub.status.busy": "2024-04-26T04:29:28.343848Z",
-     "iopub.status.idle": "2024-04-26T04:29:46.474362Z",
-     "shell.execute_reply": "2024-04-26T04:29:46.472985Z"
+     "iopub.execute_input": "2024-04-26T04:52:44.650560Z",
+     "iopub.status.busy": "2024-04-26T04:52:44.650210Z",
+     "iopub.status.idle": "2024-04-26T04:52:58.366140Z",
+     "shell.execute_reply": "2024-04-26T04:52:58.365038Z"
     },
     "papermill": {
-     "duration": 18.144297,
-     "end_time": "2024-04-26T04:29:46.477420",
+     "duration": 13.727201,
+     "end_time": "2024-04-26T04:52:58.368811",
      "exception": false,
-     "start_time": "2024-04-26T04:29:28.333123",
+     "start_time": "2024-04-26T04:52:44.641610",
      "status": "completed"
     },
     "tags": []
@@ -27,9 +27,9 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "2024-04-26 04:29:33.312744: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered\n",
-      "2024-04-26 04:29:33.312901: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered\n",
-      "2024-04-26 04:29:33.488694: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered\n"
+      "2024-04-26 04:52:48.376667: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered\n",
+      "2024-04-26 04:52:48.376790: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered\n",
+      "2024-04-26 04:52:48.491966: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered\n"
      ]
     }
    ],
@@ -58,13 +58,13 @@
   },
   {
    "cell_type": "markdown",
-   "id": "95f3840c",
+   "id": "d359573f",
    "metadata": {
     "papermill": {
-     "duration": 0.008292,
-     "end_time": "2024-04-26T04:29:46.494935",
+     "duration": 0.006352,
+     "end_time": "2024-04-26T04:52:58.382304",
      "exception": false,
-     "start_time": "2024-04-26T04:29:46.486643",
+     "start_time": "2024-04-26T04:52:58.375952",
      "status": "completed"
     },
     "tags": []
@@ -76,19 +76,19 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "7859698c",
+   "id": "4758c7ca",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:46.515532Z",
-     "iopub.status.busy": "2024-04-26T04:29:46.514813Z",
-     "iopub.status.idle": "2024-04-26T04:29:46.571466Z",
-     "shell.execute_reply": "2024-04-26T04:29:46.570285Z"
+     "iopub.execute_input": "2024-04-26T04:52:58.397626Z",
+     "iopub.status.busy": "2024-04-26T04:52:58.396974Z",
+     "iopub.status.idle": "2024-04-26T04:52:58.430541Z",
+     "shell.execute_reply": "2024-04-26T04:52:58.429347Z"
     },
     "papermill": {
-     "duration": 0.069905,
-     "end_time": "2024-04-26T04:29:46.574369",
+     "duration": 0.043766,
+     "end_time": "2024-04-26T04:52:58.432766",
      "exception": false,
-     "start_time": "2024-04-26T04:29:46.504464",
+     "start_time": "2024-04-26T04:52:58.389000",
      "status": "completed"
     },
     "tags": []
@@ -210,19 +210,19 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "fa85799b",
+   "id": "318ebbc2",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:46.594281Z",
-     "iopub.status.busy": "2024-04-26T04:29:46.593774Z",
-     "iopub.status.idle": "2024-04-26T04:29:46.604436Z",
-     "shell.execute_reply": "2024-04-26T04:29:46.602754Z"
+     "iopub.execute_input": "2024-04-26T04:52:58.448298Z",
+     "iopub.status.busy": "2024-04-26T04:52:58.447913Z",
+     "iopub.status.idle": "2024-04-26T04:52:58.455432Z",
+     "shell.execute_reply": "2024-04-26T04:52:58.454272Z"
     },
     "papermill": {
-     "duration": 0.023483,
-     "end_time": "2024-04-26T04:29:46.606892",
+     "duration": 0.017563,
+     "end_time": "2024-04-26T04:52:58.457344",
      "exception": false,
-     "start_time": "2024-04-26T04:29:46.583409",
+     "start_time": "2024-04-26T04:52:58.439781",
      "status": "completed"
     },
     "tags": []
@@ -254,19 +254,19 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "4b436d9a",
+   "id": "e8737082",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:46.626731Z",
-     "iopub.status.busy": "2024-04-26T04:29:46.626273Z",
-     "iopub.status.idle": "2024-04-26T04:29:48.523879Z",
-     "shell.execute_reply": "2024-04-26T04:29:48.522712Z"
+     "iopub.execute_input": "2024-04-26T04:52:58.473496Z",
+     "iopub.status.busy": "2024-04-26T04:52:58.472533Z",
+     "iopub.status.idle": "2024-04-26T04:52:59.698764Z",
+     "shell.execute_reply": "2024-04-26T04:52:59.697765Z"
     },
     "papermill": {
-     "duration": 1.910687,
-     "end_time": "2024-04-26T04:29:48.526656",
+     "duration": 1.236593,
+     "end_time": "2024-04-26T04:52:59.700945",
      "exception": false,
-     "start_time": "2024-04-26T04:29:46.615969",
+     "start_time": "2024-04-26T04:52:58.464352",
      "status": "completed"
     },
     "tags": []
@@ -292,19 +292,19 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "4e1538a7",
+   "id": "5f58397d",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:48.548024Z",
-     "iopub.status.busy": "2024-04-26T04:29:48.547585Z",
-     "iopub.status.idle": "2024-04-26T04:29:48.965764Z",
-     "shell.execute_reply": "2024-04-26T04:29:48.964498Z"
+     "iopub.execute_input": "2024-04-26T04:52:59.718490Z",
+     "iopub.status.busy": "2024-04-26T04:52:59.718124Z",
+     "iopub.status.idle": "2024-04-26T04:52:59.989028Z",
+     "shell.execute_reply": "2024-04-26T04:52:59.988090Z"
     },
     "papermill": {
-     "duration": 0.431945,
-     "end_time": "2024-04-26T04:29:48.968314",
+     "duration": 0.282002,
+     "end_time": "2024-04-26T04:52:59.991585",
      "exception": false,
-     "start_time": "2024-04-26T04:29:48.536369",
+     "start_time": "2024-04-26T04:52:59.709583",
      "status": "completed"
     },
     "tags": []
@@ -330,19 +330,19 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "2e91d721",
+   "id": "6825c45e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:48.994183Z",
-     "iopub.status.busy": "2024-04-26T04:29:48.993745Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.011193Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.009714Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.008707Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.007892Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.023325Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.022129Z"
     },
     "papermill": {
-     "duration": 0.032197,
-     "end_time": "2024-04-26T04:29:49.014468",
+     "duration": 0.025985,
+     "end_time": "2024-04-26T04:53:00.025778",
      "exception": false,
-     "start_time": "2024-04-26T04:29:48.982271",
+     "start_time": "2024-04-26T04:52:59.999793",
      "status": "completed"
     },
     "tags": []
@@ -378,19 +378,19 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "8ad5f977",
+   "id": "23304217",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.035523Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.035075Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.048533Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.047130Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.042770Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.042046Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.053275Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.052263Z"
     },
     "papermill": {
-     "duration": 0.027233,
-     "end_time": "2024-04-26T04:29:49.051359",
+     "duration": 0.021969,
+     "end_time": "2024-04-26T04:53:00.055506",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.024126",
+     "start_time": "2024-04-26T04:53:00.033537",
      "status": "completed"
     },
     "tags": []
@@ -414,13 +414,13 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c149ac32",
+   "id": "0798a4b8",
    "metadata": {
     "papermill": {
-     "duration": 0.009114,
-     "end_time": "2024-04-26T04:29:49.071294",
+     "duration": 0.007142,
+     "end_time": "2024-04-26T04:53:00.070184",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.062180",
+     "start_time": "2024-04-26T04:53:00.063042",
      "status": "completed"
     },
     "tags": []
@@ -431,13 +431,13 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c7d5816c",
+   "id": "19e9d3a5",
    "metadata": {
     "papermill": {
-     "duration": 0.009161,
-     "end_time": "2024-04-26T04:29:49.090092",
+     "duration": 0.007099,
+     "end_time": "2024-04-26T04:53:00.084619",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.080931",
+     "start_time": "2024-04-26T04:53:00.077520",
      "status": "completed"
     },
     "tags": []
@@ -449,19 +449,19 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "4697586b",
+   "id": "18af797f",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.110949Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.110503Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.118546Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.117139Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.101401Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.100416Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.106922Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.106117Z"
     },
     "papermill": {
-     "duration": 0.022167,
-     "end_time": "2024-04-26T04:29:49.121622",
+     "duration": 0.017069,
+     "end_time": "2024-04-26T04:53:00.108971",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.099455",
+     "start_time": "2024-04-26T04:53:00.091902",
      "status": "completed"
     },
     "tags": []
@@ -481,19 +481,19 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "id": "7098867f",
+   "id": "a3bf2476",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.143422Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.142995Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.162116Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.160499Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.125530Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.125181Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.140779Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.139894Z"
     },
     "papermill": {
-     "duration": 0.033054,
-     "end_time": "2024-04-26T04:29:49.165093",
+     "duration": 0.02656,
+     "end_time": "2024-04-26T04:53:00.143147",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.132039",
+     "start_time": "2024-04-26T04:53:00.116587",
      "status": "completed"
     },
     "tags": []
@@ -506,19 +506,19 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "id": "b0f46853",
+   "id": "7e6a9c96",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.186897Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.186412Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.193483Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.192236Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.160257Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.159633Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.164155Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.163415Z"
     },
     "papermill": {
-     "duration": 0.020915,
-     "end_time": "2024-04-26T04:29:49.196031",
+     "duration": 0.015191,
+     "end_time": "2024-04-26T04:53:00.166100",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.175116",
+     "start_time": "2024-04-26T04:53:00.150909",
      "status": "completed"
     },
     "tags": []
@@ -536,19 +536,19 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "id": "d06e7942",
+   "id": "1fd69f14",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.217981Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.217558Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.234769Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.233395Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.182497Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.181879Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.197267Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.196184Z"
     },
     "papermill": {
-     "duration": 0.032191,
-     "end_time": "2024-04-26T04:29:49.238138",
+     "duration": 0.026039,
+     "end_time": "2024-04-26T04:53:00.199482",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.205947",
+     "start_time": "2024-04-26T04:53:00.173443",
      "status": "completed"
     },
     "tags": []
@@ -563,19 +563,19 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "id": "93326ce1",
+   "id": "94fd9ead",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.259820Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.259366Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.272347Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.271024Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.216239Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.215871Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.225226Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.224219Z"
     },
     "papermill": {
-     "duration": 0.027104,
-     "end_time": "2024-04-26T04:29:49.275014",
+     "duration": 0.020188,
+     "end_time": "2024-04-26T04:53:00.227288",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.247910",
+     "start_time": "2024-04-26T04:53:00.207100",
      "status": "completed"
     },
     "tags": []
@@ -641,19 +641,19 @@
   {
    "cell_type": "code",
    "execution_count": 13,
-   "id": "bac8d207",
+   "id": "14d87c3c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.297045Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.296588Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.311456Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.309784Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.244395Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.243713Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.254848Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.253807Z"
     },
     "papermill": {
-     "duration": 0.028702,
-     "end_time": "2024-04-26T04:29:49.313761",
+     "duration": 0.022285,
+     "end_time": "2024-04-26T04:53:00.257016",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.285059",
+     "start_time": "2024-04-26T04:53:00.234731",
      "status": "completed"
     },
     "tags": []
@@ -708,13 +708,13 @@
   },
   {
    "cell_type": "markdown",
-   "id": "98f575bb",
+   "id": "c834f1f8",
    "metadata": {
     "papermill": {
-     "duration": 0.009268,
-     "end_time": "2024-04-26T04:29:49.332766",
+     "duration": 0.00706,
+     "end_time": "2024-04-26T04:53:00.271478",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.323498",
+     "start_time": "2024-04-26T04:53:00.264418",
      "status": "completed"
     },
     "tags": []
@@ -725,37 +725,37 @@
   },
   {
    "cell_type": "markdown",
-   "id": "1ce35305",
+   "id": "b576ebed",
    "metadata": {
     "papermill": {
-     "duration": 0.009291,
-     "end_time": "2024-04-26T04:29:49.351810",
+     "duration": 0.007029,
+     "end_time": "2024-04-26T04:53:00.285957",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.342519",
+     "start_time": "2024-04-26T04:53:00.278928",
      "status": "completed"
     },
     "tags": []
    },
    "source": [
-    "Running PCA to find the principal components and then choosing the components that best predict gender."
+    "Running PCA to find the principal components in the data."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 14,
-   "id": "e7f3a20f",
+   "id": "8a50977e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.373150Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.372744Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.583785Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.582765Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.302068Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.301676Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.457540Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.456669Z"
     },
     "papermill": {
-     "duration": 0.225351,
-     "end_time": "2024-04-26T04:29:49.586718",
+     "duration": 0.167164,
+     "end_time": "2024-04-26T04:53:00.460319",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.361367",
+     "start_time": "2024-04-26T04:53:00.293155",
      "status": "completed"
     },
     "tags": []
@@ -769,26 +769,26 @@
   {
    "cell_type": "code",
    "execution_count": 15,
-   "id": "40197b57",
+   "id": "0a9d92a0",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.608972Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.608522Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.617856Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.616592Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.477280Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.476168Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.483757Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.482884Z"
     },
     "papermill": {
-     "duration": 0.023365,
-     "end_time": "2024-04-26T04:29:49.620123",
+     "duration": 0.018176,
+     "end_time": "2024-04-26T04:53:00.485815",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.596758",
+     "start_time": "2024-04-26T04:53:00.467639",
      "status": "completed"
     },
     "tags": []
    },
    "outputs": [],
    "source": [
-    "class pca(decomposition.PCA):\n",
+    "class PCA_(decomposition.PCA):\n",
     "    def __init__(self, x_train, x_val, x_test):\n",
     "        super().__init__()\n",
     "        self.x_train = x_train\n",
@@ -813,40 +813,134 @@
   {
    "cell_type": "code",
    "execution_count": 16,
-   "id": "0ae7054c",
+   "id": "e3ae1d5d",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.641089Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.640680Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.824572Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.822967Z"
+     "iopub.execute_input": "2024-04-26T04:53:00.503062Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.502074Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.580162Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.578965Z"
     },
     "papermill": {
-     "duration": 0.199237,
-     "end_time": "2024-04-26T04:29:49.828936",
+     "duration": 0.089727,
+     "end_time": "2024-04-26T04:53:00.583214",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.629699",
+     "start_time": "2024-04-26T04:53:00.493487",
      "status": "completed"
     },
     "tags": []
    },
    "outputs": [],
    "source": [
-    "pca = pca(x_train, x_val, x_test)\n",
-    "pca.run_pca()\n",
-    "g_x_train, g_x_val, g_x_test = pca.best_PCs(g_train, 5)\n",
-    "d_x_train, d_x_val, d_x_test = pca.best_PCs(d_train, 5)"
+    "pca = PCA_(x_train, x_val, x_test)\n",
+    "pca.run_pca()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "83cfe4c3",
+   "id": "3d8d1bdb",
    "metadata": {
     "papermill": {
-     "duration": 0.019692,
-     "end_time": "2024-04-26T04:29:49.869475",
+     "duration": 0.037078,
+     "end_time": "2024-04-26T04:53:00.632159",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.849783",
+     "start_time": "2024-04-26T04:53:00.595081",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "Running independent component analysis to compare to PCA."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "020ae68f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:53:00.676536Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.675978Z",
+     "iopub.status.idle": "2024-04-26T04:53:00.691495Z",
+     "shell.execute_reply": "2024-04-26T04:53:00.690259Z"
+    },
+    "papermill": {
+     "duration": 0.037723,
+     "end_time": "2024-04-26T04:53:00.694897",
+     "exception": false,
+     "start_time": "2024-04-26T04:53:00.657174",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "class ICA_(decomposition.FastICA):\n",
+    "    def __init__(self, x_train, x_val, x_test):\n",
+    "        super().__init__()\n",
+    "        self.x_train = x_train\n",
+    "        self.x_val = x_val\n",
+    "        self.x_test = x_test\n",
+    "    \n",
+    "    def run_ica(self):\n",
+    "        #Find all ICs for the data\n",
+    "        self.fit(self.x_train)\n",
+    "        #Transform the data into the new feature space\n",
+    "        self.x_train = self.transform(self.x_train)\n",
+    "        self.x_val = self.transform(self.x_val)\n",
+    "        self.x_test = self.transform(self.x_test)\n",
+    "    \n",
+    "    def best_ICs(self, Y, k):\n",
+    "        #Find the k best ICs for predicting a given outcome Y\n",
+    "        best = SelectKBest(k=k).fit(self.x_train, Y)\n",
+    "        return best.transform(self.x_train), best.transform(self.x_val), best.transform(self.x_test)\n",
+    "        "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "d02cc390",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:53:00.713967Z",
+     "iopub.status.busy": "2024-04-26T04:53:00.713575Z",
+     "iopub.status.idle": "2024-04-26T04:53:04.301506Z",
+     "shell.execute_reply": "2024-04-26T04:53:04.300314Z"
+    },
+    "papermill": {
+     "duration": 3.600868,
+     "end_time": "2024-04-26T04:53:04.304883",
+     "exception": false,
+     "start_time": "2024-04-26T04:53:00.704015",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/opt/conda/lib/python3.10/site-packages/sklearn/decomposition/_fastica.py:542: FutureWarning: Starting in v1.3, whiten='unit-variance' will be used by default.\n",
+      "  warnings.warn(\n"
+     ]
+    }
+   ],
+   "source": [
+    "ica = ICA_(x_train, x_val, x_test)\n",
+    "ica.run_ica()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2bb523c7",
+   "metadata": {
+    "papermill": {
+     "duration": 0.040958,
+     "end_time": "2024-04-26T04:53:04.357673",
+     "exception": false,
+     "start_time": "2024-04-26T04:53:04.316715",
      "status": "completed"
     },
     "tags": []
@@ -858,20 +952,20 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
-   "id": "81ffacf4",
+   "execution_count": 19,
+   "id": "d0185158",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.905942Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.905472Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.910517Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.909484Z"
+     "iopub.execute_input": "2024-04-26T04:53:04.403176Z",
+     "iopub.status.busy": "2024-04-26T04:53:04.402611Z",
+     "iopub.status.idle": "2024-04-26T04:53:04.409554Z",
+     "shell.execute_reply": "2024-04-26T04:53:04.408475Z"
     },
     "papermill": {
-     "duration": 0.02369,
-     "end_time": "2024-04-26T04:29:49.913104",
+     "duration": 0.027139,
+     "end_time": "2024-04-26T04:53:04.412344",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.889414",
+     "start_time": "2024-04-26T04:53:04.385205",
      "status": "completed"
     },
     "tags": []
@@ -883,20 +977,20 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
-   "id": "79ba6a14",
+   "execution_count": 20,
+   "id": "888ac41e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.934699Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.934242Z",
-     "iopub.status.idle": "2024-04-26T04:29:49.940760Z",
-     "shell.execute_reply": "2024-04-26T04:29:49.939518Z"
+     "iopub.execute_input": "2024-04-26T04:53:04.438228Z",
+     "iopub.status.busy": "2024-04-26T04:53:04.437850Z",
+     "iopub.status.idle": "2024-04-26T04:53:04.442564Z",
+     "shell.execute_reply": "2024-04-26T04:53:04.441815Z"
     },
     "papermill": {
-     "duration": 0.020282,
-     "end_time": "2024-04-26T04:29:49.943159",
+     "duration": 0.016947,
+     "end_time": "2024-04-26T04:53:04.445943",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.922877",
+     "start_time": "2024-04-26T04:53:04.428996",
      "status": "completed"
     },
     "tags": []
@@ -912,20 +1006,20 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
-   "id": "d9883faa",
+   "execution_count": 21,
+   "id": "ba76af8a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:49.964282Z",
-     "iopub.status.busy": "2024-04-26T04:29:49.963854Z",
-     "iopub.status.idle": "2024-04-26T04:29:50.400274Z",
-     "shell.execute_reply": "2024-04-26T04:29:50.399102Z"
+     "iopub.execute_input": "2024-04-26T04:53:04.462715Z",
+     "iopub.status.busy": "2024-04-26T04:53:04.462334Z",
+     "iopub.status.idle": "2024-04-26T04:53:07.930543Z",
+     "shell.execute_reply": "2024-04-26T04:53:07.929393Z"
     },
     "papermill": {
-     "duration": 0.451323,
-     "end_time": "2024-04-26T04:29:50.404265",
+     "duration": 3.479973,
+     "end_time": "2024-04-26T04:53:07.933535",
      "exception": false,
-     "start_time": "2024-04-26T04:29:49.952942",
+     "start_time": "2024-04-26T04:53:04.453562",
      "status": "completed"
     },
     "tags": []
@@ -935,38 +1029,48 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "For predicting gender, the best performance was achieved by using the 13 best PCs. This achieved a balanced accuracy of 0.9069742667483021\n"
+      "For predicting gender with PCs, the best performance was achieved by using the 53 best PCs. This achieved a balanced accuracy of 0.8949249772238559\n",
+      "For predicting gender with ICs, the best performance was achieved by using the 59 best ICs. This achieved a balanced accuracy of 0.9137404843144993\n"
      ]
     }
    ],
    "source": [
-    "g_stats = {}\n",
-    "for k in range(1, 15):\n",
+    "pc_g_stats = {}\n",
+    "ic_g_stats = {}\n",
+    "for k in range(1, 60):\n",
     "    g_x_train, g_x_val, g_x_test = pca.best_PCs(g_train, k)\n",
-    "    g_stats[k] = perceptron(g_x_train, g_train, g_x_val, g_val)\n",
+    "    pc_g_stats[k] = perceptron(g_x_train, g_train, g_x_val, g_val)\n",
+    "    \n",
+    "    g_x_train, g_x_val, g_x_test = ica.best_ICs(g_train, k)\n",
+    "    ic_g_stats[k] = perceptron(g_x_train, g_train, g_x_val, g_val)\n",
     "\n",
-    "g_n_pcs_best = max(g_stats, key=g_stats.get)\n",
-    "g_acc_best = g_stats[g_n_pcs_best]\n",
+    "g_n_pcs_best = max(pc_g_stats, key=pc_g_stats.get)\n",
+    "g_acc_best = pc_g_stats[g_n_pcs_best]\n",
     "\n",
-    "print('For predicting gender, the best performance was achieved by using the', g_n_pcs_best, 'best PCs. This achieved a balanced accuracy of', g_acc_best)"
+    "print('For predicting gender with PCs, the best performance was achieved by using the', g_n_pcs_best, 'best PCs. This achieved a balanced accuracy of', g_acc_best)\n",
+    "\n",
+    "g_n_ics_best = max(ic_g_stats, key=ic_g_stats.get)\n",
+    "g_acc_best = ic_g_stats[g_n_ics_best]\n",
+    "\n",
+    "print('For predicting gender with ICs, the best performance was achieved by using the', g_n_ics_best, 'best ICs. This achieved a balanced accuracy of', g_acc_best)"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
-   "id": "df1846a6",
+   "execution_count": 22,
+   "id": "0994f473",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2024-04-26T04:29:50.451983Z",
-     "iopub.status.busy": "2024-04-26T04:29:50.451323Z",
-     "iopub.status.idle": "2024-04-26T04:29:50.926908Z",
-     "shell.execute_reply": "2024-04-26T04:29:50.925413Z"
+     "iopub.execute_input": "2024-04-26T04:53:07.961465Z",
+     "iopub.status.busy": "2024-04-26T04:53:07.960168Z",
+     "iopub.status.idle": "2024-04-26T04:53:11.075386Z",
+     "shell.execute_reply": "2024-04-26T04:53:11.074260Z"
     },
     "papermill": {
-     "duration": 0.501766,
-     "end_time": "2024-04-26T04:29:50.931131",
+     "duration": 3.13255,
+     "end_time": "2024-04-26T04:53:11.078505",
      "exception": false,
-     "start_time": "2024-04-26T04:29:50.429365",
+     "start_time": "2024-04-26T04:53:07.945955",
      "status": "completed"
     },
     "tags": []
@@ -976,21 +1080,48 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "For predicting depression, the best performance was achieved by using the 1 best PCs. This achieved a balanced accuracy of 0.5417316090127303\n"
+      "For predicting depression with PCs, the best performance was achieved by using the 39 best PCs. This achieved a balanced accuracy of 0.5391702774609333\n",
+      "For predicting depression with ICs, the best performance was achieved by using the 7 best ICs. This achieved a balanced accuracy of 0.5718746985867613\n"
      ]
     }
    ],
    "source": [
-    "d_stats = {}\n",
-    "for k in range(1, 15):\n",
+    "pc_d_stats = {}\n",
+    "ic_d_stats = {}\n",
+    "for k in range(1, 60):\n",
     "    d_x_train, d_x_val, d_x_test = pca.best_PCs(d_train, k)\n",
-    "    d_stats[k] = perceptron(d_x_train, d_train, d_x_val, d_val)\n",
+    "    pc_d_stats[k] = perceptron(d_x_train, d_train, d_x_val, d_val)\n",
+    "    \n",
+    "    d_x_train, d_x_val, d_x_test = ica.best_ICs(d_train, k)\n",
+    "    ic_d_stats[k] = perceptron(d_x_train, d_train, d_x_val, d_val)\n",
     "\n",
-    "d_n_pcs_best = max(d_stats, key=d_stats.get)\n",
-    "d_acc_best = d_stats[d_n_pcs_best]\n",
+    "d_n_pcs_best = max(pc_d_stats, key=pc_d_stats.get)\n",
+    "d_acc_best = pc_d_stats[d_n_pcs_best]\n",
     "\n",
-    "print('For predicting depression, the best performance was achieved by using the', d_n_pcs_best, 'best PCs. This achieved a balanced accuracy of', d_acc_best)"
+    "print('For predicting depression with PCs, the best performance was achieved by using the', d_n_pcs_best, 'best PCs. This achieved a balanced accuracy of', d_acc_best)\n",
+    "\n",
+    "d_n_ics_best = max(ic_d_stats, key=ic_d_stats.get)\n",
+    "d_acc_best = ic_d_stats[d_n_ics_best]\n",
+    "\n",
+    "print('For predicting depression with ICs, the best performance was achieved by using the', d_n_ics_best, 'best ICs. This achieved a balanced accuracy of', d_acc_best)"
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1d4982f1",
+   "metadata": {
+    "papermill": {
+     "duration": 0.011901,
+     "end_time": "2024-04-26T04:53:11.102964",
+     "exception": false,
+     "start_time": "2024-04-26T04:53:11.091063",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": []
   }
  ],
  "metadata": {
@@ -1028,14 +1159,14 @@
   },
   "papermill": {
    "default_parameters": {},
-   "duration": 28.18464,
-   "end_time": "2024-04-26T04:29:53.373560",
+   "duration": 30.503975,
+   "end_time": "2024-04-26T04:53:12.553356",
    "environment_variables": {},
    "exception": null,
    "input_path": "__notebook__.ipynb",
    "output_path": "__notebook__.ipynb",
    "parameters": {},
-   "start_time": "2024-04-26T04:29:25.188920",
+   "start_time": "2024-04-26T04:52:42.049381",
    "version": "2.5.0"
   }
  },
