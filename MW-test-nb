@@ -1,1 +1,1044 @@
-{"metadata":{"kernelspec":{"language":"python","display_name":"Python 3","name":"python3"},"language_info":{"name":"python","version":"3.10.13","mimetype":"text/x-python","codemirror_mode":{"name":"ipython","version":3},"pygments_lexer":"ipython3","nbconvert_exporter":"python","file_extension":".py"},"kaggle":{"accelerator":"none","dataSources":[{"sourceId":8208545,"sourceType":"datasetVersion","datasetId":4864172}],"dockerImageVersionId":30698,"isInternetEnabled":true,"language":"python","sourceType":"notebook","isGpuEnabled":false}},"nbformat_minor":4,"nbformat":4,"cells":[{"cell_type":"code","source":"import os\nimport numpy as np\nimport pandas as pd\nimport seaborn as sn\nfrom tqdm import tqdm\nimport tensorflow as tf\nimport matplotlib.pyplot as plt\nimport math\nimport random\nimport time\nimport keras\nfrom keras.datasets import cifar10\nfrom keras.utils import to_categorical\nfrom keras import models, layers, optimizers, regularizers\nfrom keras.models import Model, Sequential\nfrom keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten\nfrom skimage.color import rgb2gray\nimport sklearn\nfrom sklearn import model_selection, preprocessing\nfrom scipy import stats","metadata":{"_uuid":"8f2839f25d086af736a60e9eeb907d3b93b6e0e5","_cell_guid":"b1076dfc-b9ad-4769-8c92-a6c4dae69d19","execution":{"iopub.status.busy":"2024-04-26T01:52:04.318984Z","iopub.execute_input":"2024-04-26T01:52:04.320114Z","iopub.status.idle":"2024-04-26T01:52:18.865594Z","shell.execute_reply.started":"2024-04-26T01:52:04.320072Z","shell.execute_reply":"2024-04-26T01:52:18.864089Z"},"trusted":true},"execution_count":1,"outputs":[{"name":"stderr","text":"2024-04-26 01:52:08.654922: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered\n2024-04-26 01:52:08.655036: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered\n2024-04-26 01:52:08.811210: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered\n","output_type":"stream"}]},{"cell_type":"markdown","source":"# Load and explore dataset","metadata":{}},{"cell_type":"code","source":"wd = '/kaggle/input/woz-speech/'\n#Set training and test folder paths\ntraining_path = wd+'features_train/features_train'\ntest_path = wd+'features_test/features_test'\n\n#Load labels file\nlabels = pd.read_csv(wd+'labels.csv')\n\n#Load feature description files, take out column 0 to use as header for training/test sets\nfeatures = pd.read_csv(wd+'feature_description.csv', encoding_errors='ignore', header=None, index_col=0)\nfeatures = features.index.tolist()\nfeatures","metadata":{"execution":{"iopub.status.busy":"2024-04-26T01:53:21.005834Z","iopub.execute_input":"2024-04-26T01:53:21.006223Z","iopub.status.idle":"2024-04-26T01:53:21.095816Z","shell.execute_reply.started":"2024-04-26T01:53:21.006194Z","shell.execute_reply":"2024-04-26T01:53:21.094495Z"},"trusted":true},"execution_count":2,"outputs":[{"execution_count":2,"output_type":"execute_result","data":{"text/plain":"['F0semitoneFrom27.5Hz_sma3nz_amean',\n 'F0semitoneFrom27.5Hz_sma3nz_stddevNorm',\n 'F0semitoneFrom27.5Hz_sma3nz_percentile20.0',\n 'F0semitoneFrom27.5Hz_sma3nz_percentile50.0',\n 'F0semitoneFrom27.5Hz_sma3nz_percentile80.0',\n 'F0semitoneFrom27.5Hz_sma3nz_pctlrange0-2',\n 'F0semitoneFrom27.5Hz_sma3nz_meanRisingSlope',\n 'F0semitoneFrom27.5Hz_sma3nz_stddevRisingSlope',\n 'F0semitoneFrom27.5Hz_sma3nz_meanFallingSlope',\n 'F0semitoneFrom27.5Hz_sma3nz_stddevFallingSlope',\n 'loudness_sma3_amean',\n 'loudness_sma3_stddevNorm',\n 'loudness_sma3_percentile20.0',\n 'loudness_sma3_percentile50.0',\n 'loudness_sma3_percentile80.0',\n 'loudness_sma3_pctlrange0-2',\n 'loudness_sma3_meanRisingSlope',\n 'loudness_sma3_stddevRisingSlope',\n 'loudness_sma3_meanFallingSlope',\n 'loudness_sma3_stddevFallingSlope',\n 'spectralFlux_sma3_amean',\n 'spectralFlux_sma3_stddevNorm',\n 'mfcc1_sma3_amean',\n 'mfcc1_sma3_stddevNorm',\n 'mfcc2_sma3_amean',\n 'mfcc2_sma3_stddevNorm',\n 'mfcc3_sma3_amean',\n 'mfcc3_sma3_stddevNorm',\n 'mfcc4_sma3_amean',\n 'mfcc4_sma3_stddevNorm',\n 'jitterLocal_sma3nz_amean',\n 'jitterLocal_sma3nz_stddevNorm',\n 'shimmerLocaldB_sma3nz_amean',\n 'shimmerLocaldB_sma3nz_stddevNorm',\n 'HNRdBACF_sma3nz_amean',\n 'HNRdBACF_sma3nz_stddevNorm',\n 'logRelF0-H1-H2_sma3nz_amean',\n 'logRelF0-H1-H2_sma3nz_stddevNorm',\n 'logRelF0-H1-A3_sma3nz_amean',\n 'logRelF0-H1-A3_sma3nz_stddevNorm',\n 'F1frequency_sma3nz_amean',\n 'F1frequency_sma3nz_stddevNorm',\n 'F1bandwidth_sma3nz_amean',\n 'F1bandwidth_sma3nz_stddevNorm',\n 'F1amplitudeLogRelF0_sma3nz_amean',\n 'F1amplitudeLogRelF0_sma3nz_stddevNorm',\n 'F2frequency_sma3nz_amean',\n 'F2frequency_sma3nz_stddevNorm',\n 'F2bandwidth_sma3nz_amean',\n 'F2bandwidth_sma3nz_stddevNorm',\n 'F2amplitudeLogRelF0_sma3nz_amean',\n 'F2amplitudeLogRelF0_sma3nz_stddevNorm',\n 'F3frequency_sma3nz_amean',\n 'F3frequency_sma3nz_stddevNorm',\n 'F3bandwidth_sma3nz_amean',\n 'F3bandwidth_sma3nz_stddevNorm',\n 'F3amplitudeLogRelF0_sma3nz_amean',\n 'F3amplitudeLogRelF0_sma3nz_stddevNorm',\n 'alphaRatioV_sma3nz_amean',\n 'alphaRatioV_sma3nz_stddevNorm',\n 'hammarbergIndexV_sma3nz_amean',\n 'hammarbergIndexV_sma3nz_stddevNorm',\n 'slopeV0-500_sma3nz_amean',\n 'slopeV0-500_sma3nz_stddevNorm',\n 'slopeV500-1500_sma3nz_amean',\n 'slopeV500-1500_sma3nz_stddevNorm',\n 'spectralFluxV_sma3nz_amean',\n 'spectralFluxV_sma3nz_stddevNorm',\n 'mfcc1V_sma3nz_amean',\n 'mfcc1V_sma3nz_stddevNorm',\n 'mfcc2V_sma3nz_amean',\n 'mfcc2V_sma3nz_stddevNorm',\n 'mfcc3V_sma3nz_amean',\n 'mfcc3V_sma3nz_stddevNorm',\n 'mfcc4V_sma3nz_amean',\n 'mfcc4V_sma3nz_stddevNorm',\n 'alphaRatioUV_sma3nz_amean',\n 'hammarbergIndexUV_sma3nz_amean',\n 'slopeUV0-500_sma3nz_amean',\n 'slopeUV500-1500_sma3nz_amean',\n 'spectralFluxUV_sma3nz_amean',\n 'loudnessPeaksPerSec',\n 'VoicedSegmentsPerSec',\n 'MeanVoicedSegmentLengthSec',\n 'StddevVoicedSegmentLengthSec',\n 'MeanUnvoicedSegmentLength',\n 'StddevUnvoicedSegmentLength',\n 'equivalentSoundLevel_dBp']"},"metadata":{}}]},{"cell_type":"code","source":"def load_data(folder_path):\n    #Init empty dataframe\n    res = pd.DataFrame()\n    for file in os.listdir(folder_path):\n        #for each speaker file\n        if file.endswith('.csv'):\n            #get participant id from filename, eg filename: 'spk_305.csv'\n            participant = float(file.split('_')[1].split('.')[0])\n            #find labels for the participant\n            label = labels[labels['Participant_ID'] == participant]\n            #load participant feature file\n            file_path = os.path.join(folder_path, file)\n            data_df = pd.read_csv(file_path, header=None, names=features)\n            #Add labels and participant id columns\n            data_df['participant'] = participant\n            data_df['gender'] = label['Gender'].values[0]\n            data_df['depression'] = label['Depression'].values[0]\n            #combine everything to result\n            res = pd.concat([res, data_df])\n    return res","metadata":{"execution":{"iopub.status.busy":"2024-04-26T02:04:55.350903Z","iopub.execute_input":"2024-04-26T02:04:55.351287Z","iopub.status.idle":"2024-04-26T02:04:55.359754Z","shell.execute_reply.started":"2024-04-26T02:04:55.351258Z","shell.execute_reply":"2024-04-26T02:04:55.358341Z"},"trusted":true},"execution_count":4,"outputs":[]},{"cell_type":"code","source":"#Load training data\ntraining_df = load_data(training_path)\nlen(training_df)","metadata":{"execution":{"iopub.status.busy":"2024-04-26T02:04:58.516765Z","iopub.execute_input":"2024-04-26T02:04:58.517086Z","iopub.status.idle":"2024-04-26T02:04:59.918387Z","shell.execute_reply.started":"2024-04-26T02:04:58.517065Z","shell.execute_reply":"2024-04-26T02:04:59.917021Z"},"trusted":true},"execution_count":5,"outputs":[{"execution_count":5,"output_type":"execute_result","data":{"text/plain":"13626"},"metadata":{}}]},{"cell_type":"code","source":"#Load test data\ntest_df = load_data(test_path)\nlen(test_df)","metadata":{"execution":{"iopub.status.busy":"2024-04-26T02:05:03.518291Z","iopub.execute_input":"2024-04-26T02:05:03.518661Z","iopub.status.idle":"2024-04-26T02:05:03.835506Z","shell.execute_reply.started":"2024-04-26T02:05:03.518638Z","shell.execute_reply":"2024-04-26T02:05:03.834353Z"},"trusted":true},"execution_count":6,"outputs":[{"execution_count":6,"output_type":"execute_result","data":{"text/plain":"3280"},"metadata":{}}]},{"cell_type":"code","source":"# Check Missing values\nmissing_values = (training_df.isnull().sum()/len(training_df)) *100\nprint(f'Missing value percent % for each column, total samples {len(training_df)}')\nprint(missing_values)","metadata":{"execution":{"iopub.status.busy":"2024-04-26T02:05:06.080775Z","iopub.execute_input":"2024-04-26T02:05:06.081145Z","iopub.status.idle":"2024-04-26T02:05:06.095273Z","shell.execute_reply.started":"2024-04-26T02:05:06.081122Z","shell.execute_reply":"2024-04-26T02:05:06.093991Z"},"trusted":true},"execution_count":7,"outputs":[{"name":"stdout","text":"Missing value percent % for each column, total samples 13626\nF0semitoneFrom27.5Hz_sma3nz_amean             0.007339\nF0semitoneFrom27.5Hz_sma3nz_stddevNorm        0.007339\nF0semitoneFrom27.5Hz_sma3nz_percentile20.0    0.007339\nF0semitoneFrom27.5Hz_sma3nz_percentile50.0    0.007339\nF0semitoneFrom27.5Hz_sma3nz_percentile80.0    0.007339\n                                                ...   \nStddevUnvoicedSegmentLength                   0.007339\nequivalentSoundLevel_dBp                      0.007339\nparticipant                                   0.000000\ngender                                        0.000000\ndepression                                    0.000000\nLength: 91, dtype: float64\n","output_type":"stream"}]},{"cell_type":"code","source":"training_df = training_df.dropna()\nlen(training_df)","metadata":{"execution":{"iopub.status.busy":"2024-04-26T02:05:09.557107Z","iopub.execute_input":"2024-04-26T02:05:09.557437Z","iopub.status.idle":"2024-04-26T02:05:09.568808Z","shell.execute_reply.started":"2024-04-26T02:05:09.557415Z","shell.execute_reply":"2024-04-26T02:05:09.567623Z"},"trusted":true},"execution_count":8,"outputs":[{"execution_count":8,"output_type":"execute_result","data":{"text/plain":"13625"},"metadata":{}}]},{"cell_type":"markdown","source":"There was only one row with null values so I think we're good to drop that row.","metadata":{}},{"cell_type":"markdown","source":"Designating subjects as validation vs training subjects","metadata":{}},{"cell_type":"code","source":"def val_split(df: pd.DataFrame):\n    df['participant'] = df['participant'].astype(int)\n    n = np.unique(df['participant'])\n    n_range = range(min(n), max(n))\n    train_subs = random.sample(n_range, math.floor(len(n)*0.75))\n    train = df[df['participant'].isin(train_subs)]\n    val = df[~df['participant'].isin(train_subs)]\n    return train, val","metadata":{"execution":{"iopub.status.busy":"2024-04-26T02:49:59.761587Z","iopub.execute_input":"2024-04-26T02:49:59.761968Z","iopub.status.idle":"2024-04-26T02:49:59.768052Z","shell.execute_reply.started":"2024-04-26T02:49:59.761937Z","shell.execute_reply":"2024-04-26T02:49:59.767087Z"},"trusted":true},"execution_count":34,"outputs":[]},{"cell_type":"code","source":"train, val = val_split(training_df)","metadata":{"execution":{"iopub.status.busy":"2024-04-26T02:51:55.196447Z","iopub.execute_input":"2024-04-26T02:51:55.196815Z","iopub.status.idle":"2024-04-26T02:51:55.209604Z","shell.execute_reply.started":"2024-04-26T02:51:55.196792Z","shell.execute_reply":"2024-04-26T02:51:55.207983Z"},"trusted":true},"execution_count":38,"outputs":[]},{"cell_type":"code","source":"#Used to split into our features and our outcomes for this task\ndef x_y_split(df: pd.DataFrame):\n    x = df.drop(['participant', 'gender', 'depression'], axis = 1)\n    gender = df['gender']\n    depression = df['depression']\n    return x, gender, depression","metadata":{"execution":{"iopub.status.busy":"2024-04-26T03:00:12.165449Z","iopub.execute_input":"2024-04-26T03:00:12.165811Z","iopub.status.idle":"2024-04-26T03:00:12.170726Z","shell.execute_reply.started":"2024-04-26T03:00:12.165789Z","shell.execute_reply":"2024-04-26T03:00:12.169796Z"},"trusted":true},"execution_count":40,"outputs":[]},{"cell_type":"markdown","source":"# Feature selection","metadata":{}},{"cell_type":"markdown","source":"Running PCA to find the principal components and then choosing the components that best predict gender.","metadata":{}},{"cell_type":"code","source":"from sklearn.decomposition import PCA\nfrom sklearn.feature_selection import SelectKBest","metadata":{"execution":{"iopub.status.busy":"2024-04-26T02:17:14.953715Z","iopub.execute_input":"2024-04-26T02:17:14.954106Z","iopub.status.idle":"2024-04-26T02:17:15.015123Z","shell.execute_reply.started":"2024-04-26T02:17:14.954076Z","shell.execute_reply":"2024-04-26T02:17:15.014109Z"},"trusted":true},"execution_count":10,"outputs":[]},{"cell_type":"code","source":"class pca(PCA):\n    def __init__(self, X):\n        super().__init__()\n        self.X = X\n    \n    def run_pca(self):\n        #Find all PCs for the data\n        self.fit(self.X)\n        #Transform the data into the new feature space\n        self.X_transformed = self.transform(self.X)\n    \n    def best_PCs(self, Y, k):\n        #Find the best components for predicting an outcome\n        return SelectKBest(k=k).fit_transform(self.X, Y)\n        ","metadata":{"execution":{"iopub.status.busy":"2024-04-26T03:20:30.349222Z","iopub.execute_input":"2024-04-26T03:20:30.350210Z","iopub.status.idle":"2024-04-26T03:20:30.356138Z","shell.execute_reply.started":"2024-04-26T03:20:30.350164Z","shell.execute_reply":"2024-04-26T03:20:30.355085Z"},"trusted":true},"execution_count":67,"outputs":[]},{"cell_type":"code","source":"x_train, g_train, d_train = x_y_split(train)\nx_val, g_val, d_val = x_y_split(val)","metadata":{"execution":{"iopub.status.busy":"2024-04-26T03:21:00.518587Z","iopub.execute_input":"2024-04-26T03:21:00.518941Z","iopub.status.idle":"2024-04-26T03:21:00.526158Z","shell.execute_reply.started":"2024-04-26T03:21:00.518917Z","shell.execute_reply":"2024-04-26T03:21:00.524700Z"},"trusted":true},"execution_count":69,"outputs":[]},{"cell_type":"code","source":"pca = pca(x_train)\npca.run_pca()\ng_best = pca.best_PCs(g_train, 5)\nd_best = pca.best_PCs(d_train, 5)","metadata":{"execution":{"iopub.status.busy":"2024-04-26T03:21:03.316693Z","iopub.execute_input":"2024-04-26T03:21:03.317011Z","iopub.status.idle":"2024-04-26T03:21:03.364382Z","shell.execute_reply.started":"2024-04-26T03:21:03.316990Z","shell.execute_reply":"2024-04-26T03:21:03.362629Z"},"trusted":true},"execution_count":70,"outputs":[{"traceback":["\u001b[0;31m---------------------------------------------------------------------------\u001b[0m","\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)","Cell \u001b[0;32mIn[70], line 1\u001b[0m\n\u001b[0;32m----> 1\u001b[0m pca \u001b[38;5;241m=\u001b[39m \u001b[43mpca\u001b[49m\u001b[43m(\u001b[49m\u001b[43mx_train\u001b[49m\u001b[43m)\u001b[49m\n\u001b[1;32m      2\u001b[0m pca\u001b[38;5;241m.\u001b[39mrun_pca()\n\u001b[1;32m      3\u001b[0m g_best \u001b[38;5;241m=\u001b[39m pca\u001b[38;5;241m.\u001b[39mbest_PCs(g_train, \u001b[38;5;241m5\u001b[39m)\n","Cell \u001b[0;32mIn[67], line 3\u001b[0m, in \u001b[0;36mpca.__init__\u001b[0;34m(self, X)\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[38;5;28;01mdef\u001b[39;00m \u001b[38;5;21m__init__\u001b[39m(\u001b[38;5;28mself\u001b[39m, X):\n\u001b[0;32m----> 3\u001b[0m     \u001b[38;5;28;43msuper\u001b[39;49m\u001b[43m(\u001b[49m\u001b[43m)\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[38;5;21;43m__init__\u001b[39;49m\u001b[43m(\u001b[49m\u001b[43m)\u001b[49m\n\u001b[1;32m      4\u001b[0m     \u001b[38;5;28mself\u001b[39m\u001b[38;5;241m.\u001b[39mX \u001b[38;5;241m=\u001b[39m X\n","\u001b[0;31mTypeError\u001b[0m: PCA.__init__() missing 1 required positional argument: 'X'"],"ename":"TypeError","evalue":"PCA.__init__() missing 1 required positional argument: 'X'","output_type":"error"}]},{"cell_type":"markdown","source":"Create a logistic regression from ","metadata":{}},{"cell_type":"code","source":"","metadata":{"execution":{"iopub.status.busy":"2024-04-26T03:15:32.158110Z","iopub.execute_input":"2024-04-26T03:15:32.158466Z","iopub.status.idle":"2024-04-26T03:15:32.188157Z","shell.execute_reply.started":"2024-04-26T03:15:32.158438Z","shell.execute_reply":"2024-04-26T03:15:32.186615Z"},"trusted":true},"execution_count":66,"outputs":[{"traceback":["\u001b[0;31m---------------------------------------------------------------------------\u001b[0m","\u001b[0;31mAttributeError\u001b[0m                            Traceback (most recent call last)","Cell \u001b[0;32mIn[66], line 1\u001b[0m\n\u001b[0;32m----> 1\u001b[0m \u001b[43mg_best\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43m_scores\u001b[49m\n","\u001b[0;31mAttributeError\u001b[0m: 'numpy.ndarray' object has no attribute '_scores'"],"ename":"AttributeError","evalue":"'numpy.ndarray' object has no attribute '_scores'","output_type":"error"}]},{"cell_type":"code","source":"#Intercorrelation matrix\ncorrs = training_df.corr()\nsn.heatmap(corrs)","metadata":{"execution":{"iopub.status.busy":"2024-04-24T18:17:49.314182Z","iopub.execute_input":"2024-04-24T18:17:49.314591Z","iopub.status.idle":"2024-04-24T18:17:50.422767Z","shell.execute_reply.started":"2024-04-24T18:17:49.314561Z","shell.execute_reply":"2024-04-24T18:17:50.421679Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"code","source":"def find_high_cors(matrix: pd.DataFrame, cutoff: float):\n    high = {'feat1': [], 'feat2': [], 'r': []}\n    for i, row in matrix.iterrows():\n        for j, val in row.items():\n            #assuming here that only mirrored sets of features will have exactly the same r value\n            if val > cutoff and val not in high['r'] and i != j:\n                c = [i, j, val]\n                high['feat1'].append(i)\n                high['feat2'].append(j)\n                high['r'].append(val)\n        \n    return pd.DataFrame(high)","metadata":{"execution":{"iopub.status.busy":"2024-04-24T18:18:06.114749Z","iopub.execute_input":"2024-04-24T18:18:06.115154Z","iopub.status.idle":"2024-04-24T18:18:06.122987Z","shell.execute_reply.started":"2024-04-24T18:18:06.115123Z","shell.execute_reply":"2024-04-24T18:18:06.120952Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"code","source":"high = find_high_cors(corrs, 0.9)","metadata":{"execution":{"iopub.status.busy":"2024-04-24T18:18:08.778299Z","iopub.execute_input":"2024-04-24T18:18:08.778746Z","iopub.status.idle":"2024-04-24T18:18:08.790656Z","shell.execute_reply.started":"2024-04-24T18:18:08.778712Z","shell.execute_reply":"2024-04-24T18:18:08.789560Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"code","source":"high","metadata":{"execution":{"iopub.status.busy":"2024-04-24T18:18:10.858610Z","iopub.execute_input":"2024-04-24T18:18:10.859014Z","iopub.status.idle":"2024-04-24T18:18:10.876104Z","shell.execute_reply.started":"2024-04-24T18:18:10.858983Z","shell.execute_reply":"2024-04-24T18:18:10.875036Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"markdown","source":"Run a t-test for each feature for sex and depression groups to see which of the correlated features should be removed.","metadata":{}},{"cell_type":"code","source":"def feat_t(data: pd.DataFrame, IV: str):\n    split_0 = data[data[IV] == 0]\n    split_1 = data[data[IV] == 1]\n    pred = {'feat':[], 't': [], 'p':[]}\n    not_pred = {'feat':[], 't': [], 'p':[]}\n    for feat in data.columns:\n        if feat == IV:\n            continue\n        t, p = stats.ttest_ind(split_0[feat], split_1[feat])\n        if p < .001:\n            p = str(p) + '***'\n        elif p < .01:\n            p = str(p) + '**'\n        elif p < .05:\n            p = str(p) + '*'\n        elif p < .1:\n            p = str(p) + '.'\n        else:\n            not_pred['feat'].append(feat)\n            not_pred['t'].append(t)\n            not_pred['p'].append(p)\n            continue\n        pred['feat'].append(feat)\n        pred['t'].append(t)\n        pred['p'].append(p)\n    return pd.DataFrame(pred), pd.DataFrame(not_pred)\n        ","metadata":{"execution":{"iopub.status.busy":"2024-04-24T18:18:41.306538Z","iopub.execute_input":"2024-04-24T18:18:41.307261Z","iopub.status.idle":"2024-04-24T18:18:41.315738Z","shell.execute_reply.started":"2024-04-24T18:18:41.307228Z","shell.execute_reply":"2024-04-24T18:18:41.314656Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"code","source":"pred, not_pred = feat_t(training_df.drop(['participant', 'depression'], axis = 1), 'gender')\nnot_pred","metadata":{"execution":{"iopub.status.busy":"2024-04-24T18:18:48.621597Z","iopub.execute_input":"2024-04-24T18:18:48.621979Z","iopub.status.idle":"2024-04-24T18:18:48.748583Z","shell.execute_reply.started":"2024-04-24T18:18:48.621950Z","shell.execute_reply":"2024-04-24T18:18:48.747531Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"markdown","source":"None of the correlated features are not significantly different between genders so that doesn't help us decide. Will use the ones with the most significant difference between genders.","metadata":{}},{"cell_type":"code","source":"pred","metadata":{"execution":{"iopub.status.busy":"2024-04-24T18:19:37.136841Z","iopub.execute_input":"2024-04-24T18:19:37.137245Z","iopub.status.idle":"2024-04-24T18:19:37.151697Z","shell.execute_reply.started":"2024-04-24T18:19:37.137218Z","shell.execute_reply":"2024-04-24T18:19:37.150396Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"code","source":"ts = {'feat': [], 't': []}\ncor_feats = list(np.unique(high['feat1'])) + list(np.unique(high['feat2']))\nfor feat in cor_feats:\n    t = pred['t'][pred['feat']==feat]\n    ts['feat'].append(feat)\n    ts['t'].append(t)\nts = pd.DataFrame(ts)","metadata":{"execution":{"iopub.status.busy":"2024-04-23T19:52:42.386254Z","iopub.execute_input":"2024-04-23T19:52:42.386738Z","iopub.status.idle":"2024-04-23T19:52:42.403665Z","shell.execute_reply.started":"2024-04-23T19:52:42.386705Z","shell.execute_reply":"2024-04-23T19:52:42.402312Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"code","source":"ts","metadata":{"execution":{"iopub.status.busy":"2024-04-23T19:52:44.190857Z","iopub.execute_input":"2024-04-23T19:52:44.191564Z","iopub.status.idle":"2024-04-23T19:52:44.218046Z","shell.execute_reply.started":"2024-04-23T19:52:44.191528Z","shell.execute_reply":"2024-04-23T19:52:44.217143Z"},"trusted":true},"execution_count":null,"outputs":[]},{"cell_type":"code","source":"","metadata":{},"execution_count":null,"outputs":[]},{"cell_type":"markdown","source":"Will remove based on the smallest t value of correlated pairs.","metadata":{}}]}
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "e5c5a5d4",
+   "metadata": {
+    "_cell_guid": "b1076dfc-b9ad-4769-8c92-a6c4dae69d19",
+    "_uuid": "8f2839f25d086af736a60e9eeb907d3b93b6e0e5",
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:28.344270Z",
+     "iopub.status.busy": "2024-04-26T04:29:28.343848Z",
+     "iopub.status.idle": "2024-04-26T04:29:46.474362Z",
+     "shell.execute_reply": "2024-04-26T04:29:46.472985Z"
+    },
+    "papermill": {
+     "duration": 18.144297,
+     "end_time": "2024-04-26T04:29:46.477420",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:28.333123",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2024-04-26 04:29:33.312744: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered\n",
+      "2024-04-26 04:29:33.312901: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered\n",
+      "2024-04-26 04:29:33.488694: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered\n"
+     ]
+    }
+   ],
+   "source": [
+    "import os\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import seaborn as sn\n",
+    "from tqdm import tqdm\n",
+    "import tensorflow as tf\n",
+    "import matplotlib.pyplot as plt\n",
+    "import math\n",
+    "import random\n",
+    "import time\n",
+    "import keras\n",
+    "from keras.datasets import cifar10\n",
+    "from keras.utils import to_categorical\n",
+    "from keras import models, layers, optimizers, regularizers\n",
+    "from keras.models import Model, Sequential\n",
+    "from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten\n",
+    "from skimage.color import rgb2gray\n",
+    "import sklearn\n",
+    "from sklearn import model_selection, preprocessing, metrics\n",
+    "from scipy import stats"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "95f3840c",
+   "metadata": {
+    "papermill": {
+     "duration": 0.008292,
+     "end_time": "2024-04-26T04:29:46.494935",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:46.486643",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Load and explore dataset"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "7859698c",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:46.515532Z",
+     "iopub.status.busy": "2024-04-26T04:29:46.514813Z",
+     "iopub.status.idle": "2024-04-26T04:29:46.571466Z",
+     "shell.execute_reply": "2024-04-26T04:29:46.570285Z"
+    },
+    "papermill": {
+     "duration": 0.069905,
+     "end_time": "2024-04-26T04:29:46.574369",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:46.504464",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['F0semitoneFrom27.5Hz_sma3nz_amean',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_stddevNorm',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_percentile20.0',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_percentile50.0',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_percentile80.0',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_pctlrange0-2',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_meanRisingSlope',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_stddevRisingSlope',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_meanFallingSlope',\n",
+       " 'F0semitoneFrom27.5Hz_sma3nz_stddevFallingSlope',\n",
+       " 'loudness_sma3_amean',\n",
+       " 'loudness_sma3_stddevNorm',\n",
+       " 'loudness_sma3_percentile20.0',\n",
+       " 'loudness_sma3_percentile50.0',\n",
+       " 'loudness_sma3_percentile80.0',\n",
+       " 'loudness_sma3_pctlrange0-2',\n",
+       " 'loudness_sma3_meanRisingSlope',\n",
+       " 'loudness_sma3_stddevRisingSlope',\n",
+       " 'loudness_sma3_meanFallingSlope',\n",
+       " 'loudness_sma3_stddevFallingSlope',\n",
+       " 'spectralFlux_sma3_amean',\n",
+       " 'spectralFlux_sma3_stddevNorm',\n",
+       " 'mfcc1_sma3_amean',\n",
+       " 'mfcc1_sma3_stddevNorm',\n",
+       " 'mfcc2_sma3_amean',\n",
+       " 'mfcc2_sma3_stddevNorm',\n",
+       " 'mfcc3_sma3_amean',\n",
+       " 'mfcc3_sma3_stddevNorm',\n",
+       " 'mfcc4_sma3_amean',\n",
+       " 'mfcc4_sma3_stddevNorm',\n",
+       " 'jitterLocal_sma3nz_amean',\n",
+       " 'jitterLocal_sma3nz_stddevNorm',\n",
+       " 'shimmerLocaldB_sma3nz_amean',\n",
+       " 'shimmerLocaldB_sma3nz_stddevNorm',\n",
+       " 'HNRdBACF_sma3nz_amean',\n",
+       " 'HNRdBACF_sma3nz_stddevNorm',\n",
+       " 'logRelF0-H1-H2_sma3nz_amean',\n",
+       " 'logRelF0-H1-H2_sma3nz_stddevNorm',\n",
+       " 'logRelF0-H1-A3_sma3nz_amean',\n",
+       " 'logRelF0-H1-A3_sma3nz_stddevNorm',\n",
+       " 'F1frequency_sma3nz_amean',\n",
+       " 'F1frequency_sma3nz_stddevNorm',\n",
+       " 'F1bandwidth_sma3nz_amean',\n",
+       " 'F1bandwidth_sma3nz_stddevNorm',\n",
+       " 'F1amplitudeLogRelF0_sma3nz_amean',\n",
+       " 'F1amplitudeLogRelF0_sma3nz_stddevNorm',\n",
+       " 'F2frequency_sma3nz_amean',\n",
+       " 'F2frequency_sma3nz_stddevNorm',\n",
+       " 'F2bandwidth_sma3nz_amean',\n",
+       " 'F2bandwidth_sma3nz_stddevNorm',\n",
+       " 'F2amplitudeLogRelF0_sma3nz_amean',\n",
+       " 'F2amplitudeLogRelF0_sma3nz_stddevNorm',\n",
+       " 'F3frequency_sma3nz_amean',\n",
+       " 'F3frequency_sma3nz_stddevNorm',\n",
+       " 'F3bandwidth_sma3nz_amean',\n",
+       " 'F3bandwidth_sma3nz_stddevNorm',\n",
+       " 'F3amplitudeLogRelF0_sma3nz_amean',\n",
+       " 'F3amplitudeLogRelF0_sma3nz_stddevNorm',\n",
+       " 'alphaRatioV_sma3nz_amean',\n",
+       " 'alphaRatioV_sma3nz_stddevNorm',\n",
+       " 'hammarbergIndexV_sma3nz_amean',\n",
+       " 'hammarbergIndexV_sma3nz_stddevNorm',\n",
+       " 'slopeV0-500_sma3nz_amean',\n",
+       " 'slopeV0-500_sma3nz_stddevNorm',\n",
+       " 'slopeV500-1500_sma3nz_amean',\n",
+       " 'slopeV500-1500_sma3nz_stddevNorm',\n",
+       " 'spectralFluxV_sma3nz_amean',\n",
+       " 'spectralFluxV_sma3nz_stddevNorm',\n",
+       " 'mfcc1V_sma3nz_amean',\n",
+       " 'mfcc1V_sma3nz_stddevNorm',\n",
+       " 'mfcc2V_sma3nz_amean',\n",
+       " 'mfcc2V_sma3nz_stddevNorm',\n",
+       " 'mfcc3V_sma3nz_amean',\n",
+       " 'mfcc3V_sma3nz_stddevNorm',\n",
+       " 'mfcc4V_sma3nz_amean',\n",
+       " 'mfcc4V_sma3nz_stddevNorm',\n",
+       " 'alphaRatioUV_sma3nz_amean',\n",
+       " 'hammarbergIndexUV_sma3nz_amean',\n",
+       " 'slopeUV0-500_sma3nz_amean',\n",
+       " 'slopeUV500-1500_sma3nz_amean',\n",
+       " 'spectralFluxUV_sma3nz_amean',\n",
+       " 'loudnessPeaksPerSec',\n",
+       " 'VoicedSegmentsPerSec',\n",
+       " 'MeanVoicedSegmentLengthSec',\n",
+       " 'StddevVoicedSegmentLengthSec',\n",
+       " 'MeanUnvoicedSegmentLength',\n",
+       " 'StddevUnvoicedSegmentLength',\n",
+       " 'equivalentSoundLevel_dBp']"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "wd = '/kaggle/input/woz-speech/'\n",
+    "#Set training and test folder paths\n",
+    "training_path = wd+'features_train/features_train'\n",
+    "test_path = wd+'features_test/features_test'\n",
+    "\n",
+    "#Load labels file\n",
+    "labels = pd.read_csv(wd+'labels.csv')\n",
+    "\n",
+    "#Load feature description files, take out column 0 to use as header for training/test sets\n",
+    "features = pd.read_csv(wd+'feature_description.csv', encoding_errors='ignore', header=None, index_col=0)\n",
+    "features = features.index.tolist()\n",
+    "features"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "fa85799b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:46.594281Z",
+     "iopub.status.busy": "2024-04-26T04:29:46.593774Z",
+     "iopub.status.idle": "2024-04-26T04:29:46.604436Z",
+     "shell.execute_reply": "2024-04-26T04:29:46.602754Z"
+    },
+    "papermill": {
+     "duration": 0.023483,
+     "end_time": "2024-04-26T04:29:46.606892",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:46.583409",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def load_data(folder_path):\n",
+    "    #Init empty dataframe\n",
+    "    res = pd.DataFrame()\n",
+    "    for file in os.listdir(folder_path):\n",
+    "        #for each speaker file\n",
+    "        if file.endswith('.csv'):\n",
+    "            #get participant id from filename, eg filename: 'spk_305.csv'\n",
+    "            participant = float(file.split('_')[1].split('.')[0])\n",
+    "            #find labels for the participant\n",
+    "            label = labels[labels['Participant_ID'] == participant]\n",
+    "            #load participant feature file\n",
+    "            file_path = os.path.join(folder_path, file)\n",
+    "            data_df = pd.read_csv(file_path, header=None, names=features)\n",
+    "            #Add labels and participant id columns\n",
+    "            data_df['participant'] = participant\n",
+    "            data_df['gender'] = label['Gender'].values[0]\n",
+    "            data_df['depression'] = label['Depression'].values[0]\n",
+    "            #combine everything to result\n",
+    "            res = pd.concat([res, data_df])\n",
+    "    return res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "4b436d9a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:46.626731Z",
+     "iopub.status.busy": "2024-04-26T04:29:46.626273Z",
+     "iopub.status.idle": "2024-04-26T04:29:48.523879Z",
+     "shell.execute_reply": "2024-04-26T04:29:48.522712Z"
+    },
+    "papermill": {
+     "duration": 1.910687,
+     "end_time": "2024-04-26T04:29:48.526656",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:46.615969",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "13626"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#Load training data\n",
+    "training_df = load_data(training_path)\n",
+    "len(training_df)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "4e1538a7",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:48.548024Z",
+     "iopub.status.busy": "2024-04-26T04:29:48.547585Z",
+     "iopub.status.idle": "2024-04-26T04:29:48.965764Z",
+     "shell.execute_reply": "2024-04-26T04:29:48.964498Z"
+    },
+    "papermill": {
+     "duration": 0.431945,
+     "end_time": "2024-04-26T04:29:48.968314",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:48.536369",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3280"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#Load test data\n",
+    "test_df = load_data(test_path)\n",
+    "len(test_df)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "2e91d721",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:48.994183Z",
+     "iopub.status.busy": "2024-04-26T04:29:48.993745Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.011193Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.009714Z"
+    },
+    "papermill": {
+     "duration": 0.032197,
+     "end_time": "2024-04-26T04:29:49.014468",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:48.982271",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Missing value percent % for each column, total samples 13626\n",
+      "F0semitoneFrom27.5Hz_sma3nz_amean             0.007339\n",
+      "F0semitoneFrom27.5Hz_sma3nz_stddevNorm        0.007339\n",
+      "F0semitoneFrom27.5Hz_sma3nz_percentile20.0    0.007339\n",
+      "F0semitoneFrom27.5Hz_sma3nz_percentile50.0    0.007339\n",
+      "F0semitoneFrom27.5Hz_sma3nz_percentile80.0    0.007339\n",
+      "                                                ...   \n",
+      "StddevUnvoicedSegmentLength                   0.007339\n",
+      "equivalentSoundLevel_dBp                      0.007339\n",
+      "participant                                   0.000000\n",
+      "gender                                        0.000000\n",
+      "depression                                    0.000000\n",
+      "Length: 91, dtype: float64\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Check Missing values\n",
+    "missing_values = (training_df.isnull().sum()/len(training_df)) *100\n",
+    "print(f'Missing value percent % for each column, total samples {len(training_df)}')\n",
+    "print(missing_values)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "8ad5f977",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.035523Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.035075Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.048533Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.047130Z"
+    },
+    "papermill": {
+     "duration": 0.027233,
+     "end_time": "2024-04-26T04:29:49.051359",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.024126",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "13625"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "training_df = training_df.dropna()\n",
+    "len(training_df)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c149ac32",
+   "metadata": {
+    "papermill": {
+     "duration": 0.009114,
+     "end_time": "2024-04-26T04:29:49.071294",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.062180",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "There was only one row with null values so I think we're good to drop that row."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c7d5816c",
+   "metadata": {
+    "papermill": {
+     "duration": 0.009161,
+     "end_time": "2024-04-26T04:29:49.090092",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.080931",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "Designating subjects as validation vs training subjects"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "4697586b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.110949Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.110503Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.118546Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.117139Z"
+    },
+    "papermill": {
+     "duration": 0.022167,
+     "end_time": "2024-04-26T04:29:49.121622",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.099455",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def val_split(df: pd.DataFrame):\n",
+    "    df['participant'] = df['participant'].astype(int)\n",
+    "    n = np.unique(df['participant'])\n",
+    "    n_range = range(min(n), max(n))\n",
+    "    train_subs = random.sample(n_range, math.floor(len(n)*0.75))\n",
+    "    train = df[df['participant'].isin(train_subs)]\n",
+    "    val = df[~df['participant'].isin(train_subs)]\n",
+    "    return train, val"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "7098867f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.143422Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.142995Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.162116Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.160499Z"
+    },
+    "papermill": {
+     "duration": 0.033054,
+     "end_time": "2024-04-26T04:29:49.165093",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.132039",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "train, val = val_split(training_df)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "b0f46853",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.186897Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.186412Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.193483Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.192236Z"
+    },
+    "papermill": {
+     "duration": 0.020915,
+     "end_time": "2024-04-26T04:29:49.196031",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.175116",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "#Used to split into our features and our outcomes for this task\n",
+    "def x_y_split(df: pd.DataFrame):\n",
+    "    x = df.drop(['participant', 'gender', 'depression'], axis = 1)\n",
+    "    gender = df['gender']\n",
+    "    depression = df['depression']\n",
+    "    return x, gender, depression"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "d06e7942",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.217981Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.217558Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.234769Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.233395Z"
+    },
+    "papermill": {
+     "duration": 0.032191,
+     "end_time": "2024-04-26T04:29:49.238138",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.205947",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "x_train, g_train, d_train = x_y_split(train)\n",
+    "x_val, g_val, d_val = x_y_split(val)\n",
+    "x_test, g_test, d_test = x_y_split(test_df)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "93326ce1",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.259820Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.259366Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.272347Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.271024Z"
+    },
+    "papermill": {
+     "duration": 0.027104,
+     "end_time": "2024-04-26T04:29:49.275014",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.247910",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.metrics import confusion_matrix\n",
+    "# Calculates accuracy\n",
+    "# pass true and predicted labels\n",
+    "# return accuracy score\n",
+    "def calculate_total_accuracy(true_labels, predicted_labels):\n",
+    "    return accuracy_score(true_labels, predicted_labels)\n",
+    "\n",
+    "# Calculates accuracy\n",
+    "# pass true and predicted labels\n",
+    "# return balanced accuracy score\n",
+    "def calculate_balanced_accuracy(true_labels, predicted_labels):\n",
+    "    #calculkate confusion matrix\n",
+    "    matrix = confusion_matrix(true_labels, predicted_labels)\n",
+    "    TP = matrix[1, 1]\n",
+    "    TN = matrix[0, 0]\n",
+    "    FP = matrix[0, 1]\n",
+    "    FN = matrix[1, 0]\n",
+    "    #For positive class, how many correct predictions\n",
+    "    accuracy_positive = TP/(TP+FN)\n",
+    "    #For negative class how many \n",
+    "    accuracy_negative = TN/(TN+FP)\n",
+    "    return 0.5*(accuracy_positive + accuracy_negative)\n",
+    "\n",
+    "#Calculates Equality of Opportunity\n",
+    "# pass true and predicted labels for male samples\n",
+    "# pass true and predicted labels for female samples\n",
+    "# return balanced accuracy score\n",
+    "def calculate_EO(true_labels_male, \n",
+    "                 true_labels_female,\n",
+    "                 predicted_labels_male,\n",
+    "                predicted_labels_female):\n",
+    "    #Calculate True pistive rate for male gender with confusion matrix\n",
+    "    matrix_male = confusion_matrix(true_labels_male, predicted_labels_male)\n",
+    "    TP = matrix_male[1, 1]\n",
+    "    TN = matrix_male[0, 0]\n",
+    "    FN = matrix_male[1, 0]\n",
+    "    TPR_male = TP/(TP+FN)\n",
+    "\n",
+    "    #Calculate True pistive rate for female gender with confusion matrix\n",
+    "    matrix_female = confusion_matrix(true_labels_female, predicted_labels_female)\n",
+    "    TP = matrix_female[1, 1]\n",
+    "    TN = matrix_female[0, 0]\n",
+    "    FN = matrix_female[1, 0]\n",
+    "    TPR_female = TP/(TP+FN)\n",
+    "    \n",
+    "    # Calculate EO\n",
+    "    return 1-abs(TPR_male-TPR_female) \n",
+    "\n",
+    "#Function to calculate majority votings\n",
+    "#Pass labels\n",
+    "#Returns mode or which label was predicted most\n",
+    "def majority_voting(df):\n",
+    "    counts = df.value_counts()\n",
+    "    return counts.idxmax()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "bac8d207",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.297045Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.296588Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.311456Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.309784Z"
+    },
+    "papermill": {
+     "duration": 0.028702,
+     "end_time": "2024-04-26T04:29:49.313761",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.285059",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "#Function to calculate all metrics\n",
+    "#Pass true labels, predicted labels and a reference(test/val) dataframe\n",
+    "#referece dataframe should have all labels and features\n",
+    "#Returns a dictionary with all the metric calculated\n",
+    "def calculate_metrics(y_true, y_pred, test_data):\n",
+    "    # Initialize metrics\n",
+    "    metrics = {}\n",
+    "    #---------------------------------------------------CALCULATING TOTAL METRICS\n",
+    "    #calculate total accuracy\n",
+    "    metrics[\"Total accuracy\"] = calculate_total_accuracy(y_true, y_pred)\n",
+    "    #calculate total balanced accuracy\n",
+    "    metrics[\"Total Balanced accuracy\"] = calculate_balanced_accuracy(y_true, y_pred)\n",
+    "    #calculate total EO\n",
+    "    #find gender based indices for true labels from data\n",
+    "    male_indices = test_data[test_data['gender']==1].index\n",
+    "    female_indices = test_data[test_data['gender']==0].index\n",
+    "    #separate true labels based on indices\n",
+    "    male_true = y_true.loc[male_indices]\n",
+    "    female_true = y_true.loc[female_indices]\n",
+    "    #Find the corresponding indices for predicted labels from true_labels\n",
+    "    male_true_index_list = male_true.index.tolist()\n",
+    "    female_true_index_list = female_true.index.tolist()\n",
+    "    #Get separated predicted labels based on gender\n",
+    "    male_predicted = y_pred[[male_true_index_list.index(index) for index in male_true_index_list]]\n",
+    "    female_predicted = y_pred[[female_true_index_list.index(index) for index in female_true_index_list]]\n",
+    "    metrics[\"Total EO\"] = calculate_EO(male_true, female_true, male_predicted, female_predicted)\n",
+    "    #-------------------------------------------------CALCULATING AGGREGATED METRICS FOR EACH PARTICIPANT\n",
+    "    predictions_df = pd.DataFrame({'participant': test_data['participant'], 'predicted_label': y_pred, 'true_label': y_true})\n",
+    "    aggregated_y_true = predictions_df.groupby('participant')['true_label'].agg(majority_voting)\n",
+    "    aggregated_y_pred = predictions_df.groupby('participant')['predicted_label'].agg(majority_voting)\n",
+    "    #Calculate aggregated accuracy score\n",
+    "    metrics[\"Aggregated accuracy score\"] = calculate_total_accuracy(aggregated_y_true, aggregated_y_pred)\n",
+    "    #Calculate balanced aggregated accuracy\n",
+    "    metrics[\"Aggregated balanced accuracy score\"] = calculate_balanced_accuracy(aggregated_y_true, aggregated_y_pred)\n",
+    "    #Calculate aggregated EOs\n",
+    "    male_predictions_df = pd.DataFrame({'participant': test_data['participant'].loc[male_indices], 'predicted_label': y_pred, 'true_label': y_true})\n",
+    "    male_aggregated_y_true = male_predictions_df.groupby('participant')['true_label'].agg(majority_voting)\n",
+    "    male_aggregated_y_pred = male_predictions_df.groupby('participant')['predicted_label'].agg(majority_voting)\n",
+    "    female_predictions_df = pd.DataFrame({'participant': test_data['participant'].loc[female_indices], 'predicted_label': y_pred, 'true_label': y_true})\n",
+    "    female_aggregated_y_true = female_predictions_df.groupby('participant')['true_label'].agg(majority_voting)\n",
+    "    female_aggregated_y_pred = female_predictions_df.groupby('participant')['predicted_label'].agg(majority_voting)\n",
+    "    metrics[\"Aggregated EO score\"] = calculate_EO(male_aggregated_y_true, female_aggregated_y_true, male_aggregated_y_pred, female_aggregated_y_pred)\n",
+    "    \n",
+    "    return metrics"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "98f575bb",
+   "metadata": {
+    "papermill": {
+     "duration": 0.009268,
+     "end_time": "2024-04-26T04:29:49.332766",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.323498",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Feature selection"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1ce35305",
+   "metadata": {
+    "papermill": {
+     "duration": 0.009291,
+     "end_time": "2024-04-26T04:29:49.351810",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.342519",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "Running PCA to find the principal components and then choosing the components that best predict gender."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "e7f3a20f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.373150Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.372744Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.583785Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.582765Z"
+    },
+    "papermill": {
+     "duration": 0.225351,
+     "end_time": "2024-04-26T04:29:49.586718",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.361367",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn import decomposition\n",
+    "from sklearn.feature_selection import SelectKBest"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "40197b57",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.608972Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.608522Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.617856Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.616592Z"
+    },
+    "papermill": {
+     "duration": 0.023365,
+     "end_time": "2024-04-26T04:29:49.620123",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.596758",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "class pca(decomposition.PCA):\n",
+    "    def __init__(self, x_train, x_val, x_test):\n",
+    "        super().__init__()\n",
+    "        self.x_train = x_train\n",
+    "        self.x_val = x_val\n",
+    "        self.x_test = x_test\n",
+    "    \n",
+    "    def run_pca(self):\n",
+    "        #Find all PCs for the data\n",
+    "        self.fit(self.x_train)\n",
+    "        #Transform the data into the new feature space\n",
+    "        self.x_train = self.transform(self.x_train)\n",
+    "        self.x_val = self.transform(self.x_val)\n",
+    "        self.x_test = self.transform(self.x_test)\n",
+    "    \n",
+    "    def best_PCs(self, Y, k):\n",
+    "        #Find the k best PCs for predicting a given outcome Y\n",
+    "        best = SelectKBest(k=k).fit(self.x_train, Y)\n",
+    "        return best.transform(self.x_train), best.transform(self.x_val), best.transform(self.x_test)\n",
+    "        "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "0ae7054c",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.641089Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.640680Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.824572Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.822967Z"
+    },
+    "papermill": {
+     "duration": 0.199237,
+     "end_time": "2024-04-26T04:29:49.828936",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.629699",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "pca = pca(x_train, x_val, x_test)\n",
+    "pca.run_pca()\n",
+    "g_x_train, g_x_val, g_x_test = pca.best_PCs(g_train, 5)\n",
+    "d_x_train, d_x_val, d_x_test = pca.best_PCs(d_train, 5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "83cfe4c3",
+   "metadata": {
+    "papermill": {
+     "duration": 0.019692,
+     "end_time": "2024-04-26T04:29:49.869475",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.849783",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Linear Perceptron\n",
+    "Create a linear perceptron from the PCs that best predict gender and depression."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "81ffacf4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.905942Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.905472Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.910517Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.909484Z"
+    },
+    "papermill": {
+     "duration": 0.02369,
+     "end_time": "2024-04-26T04:29:49.913104",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.889414",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn import linear_model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "79ba6a14",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.934699Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.934242Z",
+     "iopub.status.idle": "2024-04-26T04:29:49.940760Z",
+     "shell.execute_reply": "2024-04-26T04:29:49.939518Z"
+    },
+    "papermill": {
+     "duration": 0.020282,
+     "end_time": "2024-04-26T04:29:49.943159",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.922877",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def perceptron(x_train, y_train, x_val, y_val):\n",
+    "    percept = linear_model.Perceptron()\n",
+    "    percept.fit(x_train, y_train)\n",
+    "    preds = percept.predict(x_val)\n",
+    "    return calculate_balanced_accuracy(y_val, preds)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "d9883faa",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:49.964282Z",
+     "iopub.status.busy": "2024-04-26T04:29:49.963854Z",
+     "iopub.status.idle": "2024-04-26T04:29:50.400274Z",
+     "shell.execute_reply": "2024-04-26T04:29:50.399102Z"
+    },
+    "papermill": {
+     "duration": 0.451323,
+     "end_time": "2024-04-26T04:29:50.404265",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:49.952942",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "For predicting gender, the best performance was achieved by using the 13 best PCs. This achieved a balanced accuracy of 0.9069742667483021\n"
+     ]
+    }
+   ],
+   "source": [
+    "g_stats = {}\n",
+    "for k in range(1, 15):\n",
+    "    g_x_train, g_x_val, g_x_test = pca.best_PCs(g_train, k)\n",
+    "    g_stats[k] = perceptron(g_x_train, g_train, g_x_val, g_val)\n",
+    "\n",
+    "g_n_pcs_best = max(g_stats, key=g_stats.get)\n",
+    "g_acc_best = g_stats[g_n_pcs_best]\n",
+    "\n",
+    "print('For predicting gender, the best performance was achieved by using the', g_n_pcs_best, 'best PCs. This achieved a balanced accuracy of', g_acc_best)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "df1846a6",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-04-26T04:29:50.451983Z",
+     "iopub.status.busy": "2024-04-26T04:29:50.451323Z",
+     "iopub.status.idle": "2024-04-26T04:29:50.926908Z",
+     "shell.execute_reply": "2024-04-26T04:29:50.925413Z"
+    },
+    "papermill": {
+     "duration": 0.501766,
+     "end_time": "2024-04-26T04:29:50.931131",
+     "exception": false,
+     "start_time": "2024-04-26T04:29:50.429365",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "For predicting depression, the best performance was achieved by using the 1 best PCs. This achieved a balanced accuracy of 0.5417316090127303\n"
+     ]
+    }
+   ],
+   "source": [
+    "d_stats = {}\n",
+    "for k in range(1, 15):\n",
+    "    d_x_train, d_x_val, d_x_test = pca.best_PCs(d_train, k)\n",
+    "    d_stats[k] = perceptron(d_x_train, d_train, d_x_val, d_val)\n",
+    "\n",
+    "d_n_pcs_best = max(d_stats, key=d_stats.get)\n",
+    "d_acc_best = d_stats[d_n_pcs_best]\n",
+    "\n",
+    "print('For predicting depression, the best performance was achieved by using the', d_n_pcs_best, 'best PCs. This achieved a balanced accuracy of', d_acc_best)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [
+    {
+     "datasetId": 4864172,
+     "sourceId": 8208545,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "dockerImageVersionId": 30698,
+   "isGpuEnabled": false,
+   "isInternetEnabled": true,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.13"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 28.18464,
+   "end_time": "2024-04-26T04:29:53.373560",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2024-04-26T04:29:25.188920",
+   "version": "2.5.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
